@@ -1,0 +1,3 @@
+{
+  "builds": [{ "src": "custom-build-output-directory", "use": "@vercel/static-build" }]
+}
