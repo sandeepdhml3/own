@@ -1,3 +1,5 @@
+// src/services/playlistService.js
+
 import axios from 'axios';
 
 const playlistUrl = 'https://iptv-org.github.io/iptv/countries/in.m3u';
@@ -5,9 +7,7 @@ const playlistUrl = 'https://iptv-org.github.io/iptv/countries/in.m3u';
 const fetchPlaylist = async () => {
   try {
     const response = await axios.get(playlistUrl);
-    const channels = parsePlaylist(response.data);
-    const validChannels = await validateChannels(channels);
-    return validChannels;
+    return parsePlaylist(response.data);
   } catch (error) {
     console.error('Error fetching the playlist:', error);
     return [];
@@ -38,30 +38,6 @@ const parsePlaylist = (data) => {
   });
 
   return channels;
-};
-
-const validateChannels = async (channels) => {
-  const validChannels = [];
-  for (const channel of channels) {
-    const isValid = await checkUrl(channel.url);
-    if (isValid) {
-      validChannels.push(channel);
-    } else {
-      channel.url = 'Unavailable right now, will be updated soon';
-      validChannels.push(channel);
-    }
-  }
-  return validChannels;
-};
-
-const checkUrl = async (url) => {
-  try {
-    const response = await axios.head(url);
-    return response.status === 200;
-  } catch (error) {
-    console.error(`Error checking URL ${url}:`, error);
-    return false;
-  }
 };
 
 export default fetchPlaylist;
