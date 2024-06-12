@@ -1,0 +1,32 @@
+.channel-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .channel-list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .channel-list-item:hover {
+    background-color: #333;
+  }
+  
+  .channel-list-item img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 4px;
+  }
+  
+  .channel-list-item span {
+    font-size: 16px;
+    color: #fff;
+  }
+  
