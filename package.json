@@ -11,12 +11,12 @@
     "video-react": "^1.0.0",
     "web-vitals": "^2.1.2"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+ "scripts": {
+  "vercel-build": "npm run build && npm install --legacy-peer-deps",
+  "build": "react-scripts build",
+  "start": "react-scripts start",
+  "test": "react-scripts test"
+}
   "eslintConfig": {
     "extends": [
       "react-app",
