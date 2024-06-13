@@ -7,23 +7,20 @@ import './App.css';
 import logo from './logo5.png';
 
 const App = () => {
-  const [allChannels, setAllChannels] = useState([]);
-  const [displayedChannels, setDisplayedChannels] = useState([]);
+  const [channels, setChannels] = useState([]);
   const [filteredChannels, setFilteredChannels] = useState([]);
   const [selectedChannel, setSelectedChannel] = useState(null);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const channelsPerPage = 20;
 
   useEffect(() => {
     const getChannels = async () => {
       const fetchedChannels = await fetchPlaylist();
-      const categories = ['All', ...new Set(fetchedChannels.map(channel => channel.group))];
-      setAllChannels(fetchedChannels);
+      const categories = ['All', ...new Set(fetchedChannels.map(channel => channel.groupTitle))];
+      setChannels(fetchedChannels);
       setCategories(categories);
-      setDisplayedChannels(fetchedChannels.slice(0, channelsPerPage));
+      setFilteredChannels(fetchedChannels);
     };
     getChannels();
   }, []);
@@ -32,26 +29,15 @@ const App = () => {
     filterChannels();
   }, [selectedCategory, searchQuery]);
 
-  useEffect(() => {
-    setFilteredChannels(displayedChannels);
-  }, [displayedChannels]);
-
   const filterChannels = () => {
-    let filtered = allChannels;
+    let filtered = channels;
     if (selectedCategory !== 'All') {
-      filtered = filtered.filter(channel => channel.group === selectedCategory);
+      filtered = filtered.filter(channel => channel.groupTitle === selectedCategory);
     }
     if (searchQuery) {
       filtered = filtered.filter(channel => channel.title.toLowerCase().includes(searchQuery.toLowerCase()));
     }
-    setDisplayedChannels(filtered.slice(0, channelsPerPage));
-  };
-
-  const loadMoreChannels = () => {
-    const nextPage = currentPage + 1;
-    const newChannels = allChannels.slice(0, nextPage * channelsPerPage);
-    setDisplayedChannels(newChannels);
-    setCurrentPage(nextPage);
+    setFilteredChannels(filtered);
   };
 
   return (
@@ -61,22 +47,16 @@ const App = () => {
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <div className="categories">
           {categories.map(category => (
-            <div key={category} className="category-section">
-              <button
-                className={`category-button ${category === selectedCategory ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </button>
-              {selectedCategory === category && (
-                <ChannelList channels={filteredChannels} onSelect={setSelectedChannel} />
-              )}
-            </div>
+            <button
+              key={category}
+              className={`category-button ${category === selectedCategory ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </button>
           ))}
         </div>
-        {displayedChannels.length < allChannels.length && selectedCategory === 'All' && (
-          <button onClick={loadMoreChannels} className="load-more-button">Load More</button>
-        )}
+        <ChannelList channels={filteredChannels} onSelect={setSelectedChannel} />
       </div>
       <div className="main-content">
         {selectedChannel ? (
