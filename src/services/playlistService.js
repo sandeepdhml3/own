@@ -1,5 +1,3 @@
-// src/services/playlistService.js
-
 import axios from 'axios';
 
 const playlistUrl = 'https://raw.githubusercontent.com/sandeep0600/raw/main/tv_channels_uH5cBpMpDK6w_plus.m3u';
@@ -21,7 +19,7 @@ const parsePlaylist = (data) => {
 
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
-      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
+      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)" group-title="(.*?)",(.*)/);
       if (channelInfo) {
         currentChannel = {
           id: channelInfo[1],
@@ -30,7 +28,7 @@ const parsePlaylist = (data) => {
           title: channelInfo[4],
         };
       }
-    } else if (line.startsWith('http') || line.startsWith('https')) {
+    } else if ((line.startsWith('http') || line.startsWith('https')) && !line.includes('/movie/') && !line.includes('/series/')) {
       currentChannel.url = line;
       channels.push(currentChannel);
       currentChannel = {};
