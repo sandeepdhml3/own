@@ -1,19 +1,16 @@
 import React from 'react';
-import ReactPlayer from 'react-player';
+import './SearchBar.css';
 
-const VideoPlayer = ({ src, poster, width = '100%', height = 'auto' }) => {
+const SearchBar = ({ searchQuery, setSearchQuery }) => {
   return (
-    <div className="video-player-wrapper">
-      <ReactPlayer
-        url={src}
-        playing={false}
-        controls={true}
-        width={width}
-        height={height}
-        light={poster}
-      />
-    </div>
+    <input
+      type="text"
+      className="search-bar"
+      placeholder="Search channels..."
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+    />
   );
 };
 
-export default VideoPlayer;
+export default SearchBar;
