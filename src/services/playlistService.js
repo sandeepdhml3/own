@@ -17,10 +17,28 @@ const parsePlaylist = (data) => {
   const channels = [];
   let currentChannel = {};
 
+  const allowedGroups = [
+    'SPORTS - SSC SPORTS SD / HD TV',
+    'SAUDI SPORTS ᴴᴰ',
+    'US - DOCUMENTRIES TV',
+    'UK - DOCUMENTRIES TV',
+    'SPORTS - ALL SPORTS LIVE',
+    'SPORTS - CRICKET LIVE TV',
+    'SPORTS - FOOTBALL TV',
+    'SPORTS - FOOTBALL EVENTS',
+    'SPORTS - ELEVEN SPORTS',
+    'SPORTS - EPL',
+    'SPORTS - BEIN SPORT SD / HD TV',
+    'T20 WORLD CUP 2024',
+    'BEIN ENTERTAINMENT',
+    'USA - KIDS TV',
+    'BEIN KIDS'
+  ];
+
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
       const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
-      if (channelInfo && channelInfo[2]) {  // Ensure the logo is present
+      if (channelInfo && channelInfo[2] && allowedGroups.includes(channelInfo[3])) {  // Ensure the logo is present and group is allowed
         currentChannel = {
           id: channelInfo[1],
           logo: channelInfo[2],
