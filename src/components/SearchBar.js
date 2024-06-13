@@ -1,16 +1,18 @@
-import React from 'react';
-import './SearchBar.css';
+// src/components/ChannelList.js
 
-const SearchBar = ({ searchQuery, setSearchQuery }) => {
+import React from 'react';
+
+const ChannelList = ({ channels, setSelectedChannel }) => {
   return (
-    <input
-      type="text"
-      className="search-bar"
-      placeholder="Search channels..."
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-    />
+    <div className="channel-list">
+      {channels.map(channel => (
+        <div key={channel.id} className="channel-item" onClick={() => setSelectedChannel(channel)}>
+          <img src={channel.logo} alt={channel.title} />
+          <p>{channel.title}</p>
+        </div>
+      ))}
+    </div>
   );
 };
 
-export default SearchBar;
+export default ChannelList;
