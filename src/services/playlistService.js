@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const playlistUrl = 'https://raw.githubusercontent.com/sandeep0600/raw/main/tv_channels_uH5cBpMpDK6w_plus.m3u';
+const playlistUrl = 'https://iptv-org.github.io/iptv/index.m3u';
 
 const fetchPlaylist = async () => {
   try {
@@ -16,24 +16,6 @@ const parsePlaylist = (data) => {
   const lines = data.split('\n');
   const channels = [];
   let currentChannel = {};
-
-  const allowedGroups = [
-    'SPORTS - SSC SPORTS SD / HD TV',
-    'SAUDI SPORTS ᴴᴰ',
-    'US - DOCUMENTRIES TV',
-    'UK - DOCUMENTRIES TV',
-    'SPORTS - ALL SPORTS LIVE',
-    'SPORTS - CRICKET LIVE TV',
-    'SPORTS - FOOTBALL TV',
-    'SPORTS - FOOTBALL EVENTS',
-    'SPORTS - ELEVEN SPORTS',
-    'SPORTS - EPL',
-    'SPORTS - BEIN SPORT SD / HD TV',
-    'T20 WORLD CUP 2024',
-    'BEIN ENTERTAINMENT',
-    'USA - KIDS TV',
-    'BEIN KIDS'
-  ];
 
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
