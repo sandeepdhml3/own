@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const playlistUrl = 'https://iptv-org.github.io/iptv/countries/in.m3u';
+const playlistUrl = 'https://raw.githubusercontent.com/sandeep0600/raw/main/tv_channels_uH5cBpMpDK6w_plus.m3u';
 
 const fetchPlaylist = async () => {
   try {
