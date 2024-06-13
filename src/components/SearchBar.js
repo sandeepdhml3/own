@@ -1,18 +1,19 @@
-// src/components/ChannelList.js
-
 import React from 'react';
+import ReactPlayer from 'react-player';
 
-const ChannelList = ({ channels, setSelectedChannel }) => {
+const VideoPlayer = ({ src, poster, width = '100%', height = 'auto' }) => {
   return (
-    <div className="channel-list">
-      {channels.map(channel => (
-        <div key={channel.id} className="channel-item" onClick={() => setSelectedChannel(channel)}>
-          <img src={channel.logo} alt={channel.title} />
-          <p>{channel.title}</p>
-        </div>
-      ))}
+    <div className="video-player-wrapper">
+      <ReactPlayer
+        url={src}
+        playing={false}
+        controls={true}
+        width={width}
+        height={height}
+        light={poster}
+      />
     </div>
   );
 };
 
-export default ChannelList;
+export default VideoPlayer;
