@@ -20,17 +20,19 @@ const parsePlaylist = (data) => {
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
       const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
-      if (channelInfo && channelInfo[2] && allowedGroups.includes(channelInfo[3])) {  // Ensure the logo is present and group is allowed
-        currentChannel = {
-          id: channelInfo[1],
-          logo: channelInfo[2],
-          group: channelInfo[3],
-          title: channelInfo[4],
-        };
+      if (channelInfo) {
+        const groupTitle = channelInfo[3];
+        if (groupTitle.includes('SPORTS') || groupTitle.includes('DOCUMENTARIES') || groupTitle.includes('KIDS')) {
+          currentChannel = {
+            id: channelInfo[1],
+            logo: channelInfo[2],
+            group: groupTitle,
+            title: channelInfo[4],
+          };
+        }
       }
     } else if (line.startsWith('http') || line.startsWith('https')) {
-      // Filter for IPTV links that don't end with .mkv or .mp4
-      if (currentChannel.logo && !line.match(/\.(mkv|mp4)$/)) {
+      if (currentChannel.logo) {
         currentChannel.url = line;
         channels.push(currentChannel);
         currentChannel = {};
