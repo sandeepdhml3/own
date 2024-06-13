@@ -29,7 +29,8 @@ const parsePlaylist = (data) => {
         };
       }
     } else if (line.startsWith('http') || line.startsWith('https')) {
-      if (currentChannel.logo) {
+      // Filter for IPTV links that don't end with .mkv or .mp4
+      if (currentChannel.logo && !line.match(/\.(mkv|mp4)$/)) {
         currentChannel.url = line;
         channels.push(currentChannel);
         currentChannel = {};
