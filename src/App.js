@@ -20,7 +20,7 @@ const App = () => {
   useEffect(() => {
     const getChannels = async () => {
       const fetchedChannels = await fetchPlaylist();
-      const categories = ['All', ...new Set(fetchedChannels.map(channel => channel.groupTitle))];
+      const categories = ['All', ...new Set(fetchedChannels.map(channel => channel.group))];
       setAllChannels(fetchedChannels);
       setCategories(categories);
       setDisplayedChannels(fetchedChannels.slice(0, channelsPerPage));
@@ -35,7 +35,7 @@ const App = () => {
   const filterChannels = () => {
     let filtered = displayedChannels;
     if (selectedCategory !== 'All') {
-      filtered = filtered.filter(channel => channel.groupTitle === selectedCategory);
+      filtered = filtered.filter(channel => channel.group === selectedCategory);
     }
     if (searchQuery) {
       filtered = filtered.filter(channel => channel.title.toLowerCase().includes(searchQuery.toLowerCase()));
