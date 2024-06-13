@@ -19,8 +19,8 @@ const parsePlaylist = (data) => {
 
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
-      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)" group-title="(.*?)",(.*)/);
-      if (channelInfo) {
+      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
+      if (channelInfo && channelInfo[2]) {  // Ensure the logo is present
         currentChannel = {
           id: channelInfo[1],
           logo: channelInfo[2],
@@ -28,10 +28,12 @@ const parsePlaylist = (data) => {
           title: channelInfo[4],
         };
       }
-    } else if ((line.startsWith('http') || line.startsWith('https')) && !line.includes('/movie/') && !line.includes('/series/')) {
-      currentChannel.url = line;
-      channels.push(currentChannel);
-      currentChannel = {};
+    } else if (line.startsWith('http') || line.startsWith('https')) {
+      if (currentChannel.logo) {
+        currentChannel.url = line;
+        channels.push(currentChannel);
+        currentChannel = {};
+      }
     }
   });
 
