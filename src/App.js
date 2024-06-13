@@ -30,17 +30,21 @@ const App = () => {
 
   useEffect(() => {
     filterChannels();
-  }, [selectedCategory, searchQuery, displayedChannels]);
+  }, [selectedCategory, searchQuery]);
+
+  useEffect(() => {
+    setFilteredChannels(displayedChannels);
+  }, [displayedChannels]);
 
   const filterChannels = () => {
-    let filtered = displayedChannels;
+    let filtered = allChannels;
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(channel => channel.group === selectedCategory);
     }
     if (searchQuery) {
       filtered = filtered.filter(channel => channel.title.toLowerCase().includes(searchQuery.toLowerCase()));
     }
-    setFilteredChannels(filtered);
+    setDisplayedChannels(filtered.slice(0, channelsPerPage));
   };
 
   const loadMoreChannels = () => {
@@ -57,17 +61,20 @@ const App = () => {
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <div className="categories">
           {categories.map(category => (
-            <button
-              key={category}
-              className={`category-button ${category === selectedCategory ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </button>
+            <div key={category} className="category-section">
+              <button
+                className={`category-button ${category === selectedCategory ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </button>
+              {selectedCategory === category && (
+                <ChannelList channels={filteredChannels} onSelect={setSelectedChannel} />
+              )}
+            </div>
           ))}
         </div>
-        <ChannelList channels={filteredChannels} onSelect={setSelectedChannel} />
-        {displayedChannels.length < allChannels.length && (
+        {displayedChannels.length < allChannels.length && selectedCategory === 'All' && (
           <button onClick={loadMoreChannels} className="load-more-button">Load More</button>
         )}
       </div>
