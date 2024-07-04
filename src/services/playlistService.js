@@ -19,13 +19,14 @@ const parsePlaylist = (data) => {
 
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
-      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" group-title="(.+?)", tvg-logo="(.+?)",(.+)/);
+      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" group-title="(.+?)" \| (.+?)" tvg-language="(.+?)" tvg-logo="(.+?)",(.+)/);
       if (channelInfo) {
         currentChannel = {
           id: channelInfo[1],
-          logo: channelInfo[3],
-          group: channelInfo[2],
-          title: channelInfo[4],
+          group: `${channelInfo[2]} | ${channelInfo[3]}`,
+          language: channelInfo[4],
+          logo: channelInfo[5],
+          title: channelInfo[6],
         };
       }
     } else if (line.startsWith('http') && currentChannel.id) {
