@@ -19,28 +19,35 @@ const parsePlaylist = (data) => {
 
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
-      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
+      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" group-title="(.+?)", tvg-logo="(.+?)",(.+)/);
       if (channelInfo) {
-        const groupTitle = channelInfo[3];
+        const groupTitle = channelInfo[2];
         if (groupTitle.includes('SPORTS') || groupTitle.includes('DOCUMENTARIES') || groupTitle.includes('KIDS')) {
           currentChannel = {
             id: channelInfo[1],
-            logo: channelInfo[2],
+            logo: channelInfo[3],
+            group: groupTitle,
+            title: channelInfo[4],
+          };
+        } else if (groupTitle === 'Entertainment' || groupTitle === 'News' || groupTitle === 'HD') {
+          currentChannel = {
+            id: channelInfo[1],
+            logo: channelInfo[3],
             group: groupTitle,
             title: channelInfo[4],
           };
         }
       }
-    } else if (line.startsWith('http') || line.startsWith('https')) {
-      if (currentChannel.logo) {
-        currentChannel.url = line;
-        channels.push(currentChannel);
-        currentChannel = {};
-      }
+    } else if (line.startsWith('http') && currentChannel.id) {
+      currentChannel.url = line;
+      channels.push(currentChannel);
+      currentChannel = {};
     }
   });
 
   return channels;
 };
 
-export default fetchPlaylist;
+fetchPlaylist().then(channels => {
+  console.log(channels);
+});
