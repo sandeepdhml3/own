@@ -1,17 +1,16 @@
 import React from 'react';
-import './ChannelList.css';
 
 const ChannelList = ({ channels, onSelect }) => {
   return (
     <div className="channel-list">
-      {channels.map((channel, index) => (
+      {channels.map(channel => (
         <div
-          key={index}
-          className="channel-list-item"
+          key={channel.id}
+          className="channel-item"
           onClick={() => onSelect(channel)}
         >
           <img src={channel.logo} alt={channel.title} />
-          <span>{channel.title}</span>
+          <div className="channel-title">{channel.title}</div>
         </div>
       ))}
     </div>
@@ -19,3 +18,4 @@ const ChannelList = ({ channels, onSelect }) => {
 };
 
 export default ChannelList;
+
