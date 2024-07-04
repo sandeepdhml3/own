@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const playlistUrl = 'https://amitb3669.github.io/tataplay6.m3u';
 
-export const fetchPlaylist = async () => {
+const fetchPlaylist = async () => {
   try {
     const response = await axios.get(playlistUrl);
     return parsePlaylist(response.data);
@@ -37,3 +37,5 @@ const parsePlaylist = (data) => {
 
   return channels;
 };
+
+export default fetchPlaylist;
