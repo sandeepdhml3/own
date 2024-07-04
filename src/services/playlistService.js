@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const playlistUrl = 'https://iptv-org.github.io/iptv/index.m3u';
+const playlistUrl = 'https://amitb3669.github.io/tataplay6.m3u';
 
 const fetchPlaylist = async () => {
   try {
