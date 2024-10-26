@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const playlistUrl = 'https://amitb3669.github.io/tataplay6.m3u';
+const playlistUrl = 'http://31.43.191.49:25461/get.php?username=richard&password=8sYDdCLMazvM&type=m3u';
 
 const fetchPlaylist = async () => {
   try {
@@ -19,17 +19,22 @@ const parsePlaylist = (data) => {
 
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
-      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" group-title="(.+?)" \| (.+?)" tvg-language="(.+?)" tvg-logo="(.+?)",(.+)/);
+      // Update regex to match the new format
+      const channelInfo = line.match(/#EXTINF:-1,(.+)/);
       if (channelInfo) {
-        currentChannel = {
-          id: channelInfo[1],
-          group: `${channelInfo[2]} | ${channelInfo[3]}`,
-          language: channelInfo[4],
-          logo: channelInfo[5],
-          title: channelInfo[6],
-        };
+        const titleAndGroup = channelInfo[1].trim().split(' ');
+        const group = titleAndGroup[0]; // This should capture '||IN||'
+        const title = titleAndGroup.slice(1).join(' '); // Join the remaining parts as title
+
+        // Check if the channel belongs to ||IN||
+        if (group.includes('||IN||')) {
+          currentChannel = {
+            group: group,
+            title: title,
+          };
+        }
       }
-    } else if (line.startsWith('http') && currentChannel.id) {
+    } else if (line.startsWith('http') && currentChannel.title) {
       currentChannel.url = line;
       channels.push(currentChannel);
       currentChannel = {};
