@@ -5,6 +5,10 @@ const ChannelList = ({ channels, onSelect }) => {
     <div className="channel-list">
       {channels.map(channel => (
         <div
+          key={channel.id}
+          className="channel-item"
+          onClick={() => onSelect(channel)}
+        >
           <img src={channel.logo} alt={channel.title} />
           <div className="channel-title">{channel.title}</div>
         </div>
@@ -14,4 +18,3 @@ const ChannelList = ({ channels, onSelect }) => {
 };
 
 export default ChannelList;
-
