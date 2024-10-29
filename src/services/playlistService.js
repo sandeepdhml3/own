@@ -1,11 +1,17 @@
 import axios from 'axios';
 
-const playlistUrl = 'https://corsproxy.io/?' + encodeURIComponent('https://m3u.ch/pl/d2629832a9bc61b18ed3ff4c4594861c_4d0e3ead030c975b02d6349295b035e0.m3u');
+const playlistUrl = 'https://m3u.ch/pl/d2629832a9bc61b18ed3ff4c4594861c_4d0e3ead030c975b02d6349295b035e0.m3u';
 
 const fetchPlaylist = async () => {
   try {
-    const response = await axios.get(playlistUrl);
-    return parsePlaylist(response.data);
+    const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(playlistUrl)}`);
+    
+    if (response.ok) {
+      const data = await response.json();
+      return parsePlaylist(data.contents);
+    }
+    
+    throw new Error('Network response was not ok.');
   } catch (error) {
     console.error('Error fetching the playlist:', error);
     return [];
@@ -32,9 +38,7 @@ const parsePlaylist = (data) => {
         };
       }
     } else if (line.startsWith('http') && currentChannel.title) {
-      // Prefix the stream URL with the CORS proxy
-      const streamUrl = 'https://corsproxy.io/?' + encodeURIComponent(line.trim());
-      currentChannel.url = streamUrl;
+      currentChannel.url = line.trim();
       channels.push(currentChannel);
       currentChannel = {};
     }
@@ -44,4 +48,3 @@ const parsePlaylist = (data) => {
 };
 
 export default fetchPlaylist;
-
