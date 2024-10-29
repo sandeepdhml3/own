@@ -15,7 +15,7 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-  width: 400px;
+  width: 465px;
   background-color: #1E1E1E; /* Darker sidebar */
   padding: 20px;
   box-shadow: 2px 0 15px rgba(0, 0, 0, 0.5); /* Deeper shadow for depth */
