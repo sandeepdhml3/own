@@ -1,32 +1,60 @@
+/* Netflix-inspired channel list styling */
 .channel-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .channel-list-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px;
+    background-color: #141414; /* Dark background */
+    border-radius: 8px;
+}
+
+.channel-list-item {
     display: flex;
     align-items: center;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 15px;
+    background-color: #1f1f1f; /* Slightly lighter dark background */
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .channel-list-item:hover {
-    background-color: #333;
-  }
-  
-  .channel-list-item img {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    border-radius: 4px;
-  }
-  
-  .channel-list-item span {
+    transition: transform 0.3s, background-color 0.3s;
+    width: calc(100% / 4 - 20px); /* Adjust to fit 4 items per row */
+    max-width: 180px;
+    flex-direction: column;
+    text-align: center;
+}
+
+.channel-list-item:hover {
+    background-color: #333; /* Highlight on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+.channel-list-item img {
+    width: 100%;
+    height: auto;
+    max-width: 140px;
+    max-height: 140px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.channel-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #e5e5e5; /* Light text color */
+}
+
+.channel-title {
     font-size: 16px;
-    color: #fff;
-  }
-  
+    font-weight: 500;
+    color: #ffffff;
+    margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.channel-group {
+    font-size: 14px;
+    color: #b3b3b3;
+}
