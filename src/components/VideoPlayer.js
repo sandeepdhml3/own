@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 
+import './VideoPlayer.css'; // Import the CSS file
+
+
 const VideoPlayer = ({ src, poster, width = '100%', height = 'auto', channelName }) => {
   return (
     <div className="video-player-wrapper">
