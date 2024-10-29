@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const playlistUrl = 'http://31.43.191.49:25461/get.php?username=richard&password=8sYDdCLMazvM&type=m3u';
+const playlistUrl = 'https://m3u.ch/pl/d2629832a9bc61b18ed3ff4c4594861c_4d0e3ead030c975b02d6349295b035e0.m3u';
 
 const fetchPlaylist = async () => {
   try {
@@ -19,23 +19,20 @@ const parsePlaylist = (data) => {
 
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
-      // Update regex to match the new format
-      const channelInfo = line.match(/#EXTINF:-1,(.+)/);
+      // Update regex to match the new format with tvg-id, tvg-logo, and group-title
+      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
       if (channelInfo) {
-        const titleAndGroup = channelInfo[1].trim().split(' ');
-        const group = titleAndGroup[0]; // This should capture '||IN||'
-        const title = titleAndGroup.slice(1).join(' '); // Join the remaining parts as title
-
-        // Check if the channel belongs to ||IN||
-        if (group.includes('||IN||')) {
-          currentChannel = {
-            group: group,
-            title: title,
-          };
-        }
+        const [, tvgId, tvgLogo, groupTitle, title] = channelInfo;
+        
+        currentChannel = {
+          tvgId: tvgId.trim(),
+          tvgLogo: tvgLogo.trim(),
+          groupTitle: groupTitle.trim(),
+          title: title.trim(),
+        };
       }
     } else if (line.startsWith('http') && currentChannel.title) {
-      currentChannel.url = line;
+      currentChannel.url = line.trim();
       channels.push(currentChannel);
       currentChannel = {};
     }
@@ -45,3 +42,4 @@ const parsePlaylist = (data) => {
 };
 
 export default fetchPlaylist;
+
