@@ -70,7 +70,6 @@ const App = () => {
                 width="100%"
                 height="auto"
               />
-              <img src={logo} alt="Watermark" className="watermark" />
             </div>
           </div>
         ) : (
