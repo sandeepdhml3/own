@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const playlistUrl = 'https://corsproxy.io/?https://m3u.ch/pl/d2629832a9bc61b18ed3ff4c4594861c_4d0e3ead030c975b02d6349295b035e0.m3u';
+const playlistUrl = 'https://corsproxy.io/?' + encodeURIComponent('https://m3u.ch/pl/d2629832a9bc61b18ed3ff4c4594861c_4d0e3ead030c975b02d6349295b035e0.m3u');
 
 const fetchPlaylist = async () => {
   try {
@@ -33,7 +33,8 @@ const parsePlaylist = (data) => {
       }
     } else if (line.startsWith('http') && currentChannel.title) {
       // Prefix the stream URL with the CORS proxy
-      currentChannel.url = `https://corsproxy.io/?${line.trim()}`;
+      const streamUrl = 'https://corsproxy.io/?' + encodeURIComponent(line.trim());
+      currentChannel.url = streamUrl;
       channels.push(currentChannel);
       currentChannel = {};
     }
@@ -43,3 +44,4 @@ const parsePlaylist = (data) => {
 };
 
 export default fetchPlaylist;
+
