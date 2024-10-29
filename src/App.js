@@ -4,6 +4,7 @@ import HlsPlayer from 'react-hls-player';
 import fetchPlaylist from './services/playlistService';
 import SearchBar from './components/SearchBar';
 import './App.css';
+import logo from './logo5.png';
 
 const App = () => {
   const [channels, setChannels] = useState([]);
