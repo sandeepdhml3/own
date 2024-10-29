@@ -1,29 +1,73 @@
 .video-player-wrapper {
     position: relative;
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #000;
+    max-width: 800px; /* Maximum width of the player */
+    margin: 20px auto; /* Center the player */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Clip overflow */
+    background-color: #000; /* Default background for the player */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
 }
 
 /* Overlay with gradient background */
 .video-overlay {
     position: absolute;
-    bottom: 0;
+    bottom: 0; /* Position at the bottom */
     width: 100%;
-    padding: 10px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    padding: 10px; /* Padding around the overlay */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6)); /* Dark gradient */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Center the content */
+    align-items: center; /* Center vertically */
+    z-index: 1; /* Ensure overlay is above video */
 }
 
+/* Channel name styling */
 .video-channel-name {
-    font-size: 20px;
-    font-weight: bold;
-    color: #fff;
-    text-align: center;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+    font-size: 20px; /* Font size for channel name */
+    font-weight: bold; /* Bold text */
+    color: #ffcc00; /* Gold color for a vibrant look */
+    text-align: center; /* Centered text */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Strong shadow for readability */
+}
+
+/* Play button styling */
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the button */
+    width: 60px; /* Button size */
+    height: 60px; /* Button size */
+    background-color: rgba(255, 255, 255, 0.8); /* Light background */
+    border-radius: 50%; /* Circular button */
+    display: flex;
+    justify-content: center; /* Center the icon */
+    align-items: center; /* Center the icon */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Shadow effect */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+}
+
+.play-button:hover {
+    background-color: rgba(255, 255, 255, 1); /* Solid white on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Play icon styling (use an icon library or SVG) */
+.play-icon {
+    width: 24px; /* Icon size */
+    height: 24px; /* Icon size */
+    color: #ff0000; /* Red color for the play icon */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .video-player-wrapper {
+        max-width: 100%; /* Full width on smaller screens */
+    }
+
+    .video-channel-name {
+        font-size: 16px; /* Smaller font size on mobile */
+    }
 }
