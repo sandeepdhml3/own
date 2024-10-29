@@ -4,14 +4,8 @@ const playlistUrl = 'https://m3u.ch/pl/d2629832a9bc61b18ed3ff4c4594861c_4d0e3ead
 
 const fetchPlaylist = async () => {
   try {
-    const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(playlistUrl)}`);
-    
-    if (response.ok) {
-      const data = await response.json();
-      return parsePlaylist(data.contents);
-    }
-    
-    throw new Error('Network response was not ok.');
+    const response = await axios.get(playlistUrl);
+    return parsePlaylist(response.data);
   } catch (error) {
     console.error('Error fetching the playlist:', error);
     return [];
@@ -29,7 +23,7 @@ const parsePlaylist = (data) => {
       const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
       if (channelInfo) {
         const [, tvgId, tvgLogo, groupTitle, title] = channelInfo;
-
+        
         currentChannel = {
           tvgId: tvgId.trim(),
           tvgLogo: tvgLogo.trim(),
