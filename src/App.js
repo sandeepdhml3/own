@@ -17,36 +17,26 @@ const App = () => {
   useEffect(() => {
     const getChannels = async () => {
       const fetchedChannels = await fetchPlaylist();
-      if (fetchedChannels.length > 0) {
-        // Extract unique categories from fetched channels
-        const uniqueCategories = ['All', ...new Set(fetchedChannels.map(channel => channel.groupTitle))];
-        setChannels(fetchedChannels);
-        setCategories(uniqueCategories);
-        setFilteredChannels(fetchedChannels); // Initially show all channels
-      }
+      const categories = ['All', ...new Set(fetchedChannels.map(channel => channel.group))];
+      setChannels(fetchedChannels);
+      setCategories(categories);
+      setFilteredChannels(fetchedChannels);
     };
     getChannels();
   }, []);
 
   useEffect(() => {
     filterChannels();
-  }, [selectedCategory, searchQuery, channels]); // Add channels to dependencies to refilter when they change
+  }, [selectedCategory, searchQuery]);
 
   const filterChannels = () => {
     let filtered = channels;
-
-    // Filter by selected category
     if (selectedCategory !== 'All') {
-      filtered = filtered.filter(channel => channel.groupTitle === selectedCategory);
+      filtered = filtered.filter(channel => channel.group === selectedCategory);
     }
-
-    // Filter by search query
     if (searchQuery) {
-      filtered = filtered.filter(channel =>
-        channel.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      filtered = filtered.filter(channel => channel.title.toLowerCase().includes(searchQuery.toLowerCase()));
     }
-
     setFilteredChannels(filtered);
   };
 
@@ -59,7 +49,7 @@ const App = () => {
           {categories.map(category => (
             <button
               key={category}
-              className={`category-button ${category === selectedCategory ? 'active' : ''}`}
+              className={category-button ${category === selectedCategory ? 'active' : ''}}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
