@@ -37,7 +37,7 @@ const parsePlaylist = (data) => {
     }
 
     // Check for the URL line
-    if (line.startsWith('http')) {
+    if (line.startsWith('https')) {
       // If the line starts with 'http', set the URL for the current channel
       if (currentChannel) {
         currentChannel.url = line.trim();
