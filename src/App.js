@@ -17,26 +17,36 @@ const App = () => {
   useEffect(() => {
     const getChannels = async () => {
       const fetchedChannels = await fetchPlaylist();
-      const categories = ['All', ...new Set(fetchedChannels.map(channel => channel.group))];
-      setChannels(fetchedChannels);
-      setCategories(categories);
-      setFilteredChannels(fetchedChannels);
+      if (fetchedChannels.length > 0) {
+        // Extract unique categories from fetched channels
+        const uniqueCategories = ['All', ...new Set(fetchedChannels.map(channel => channel.groupTitle))];
+        setChannels(fetchedChannels);
+        setCategories(uniqueCategories);
+        setFilteredChannels(fetchedChannels); // Initially show all channels
+      }
     };
     getChannels();
   }, []);
 
   useEffect(() => {
     filterChannels();
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, channels]); // Add channels to dependencies to refilter when they change
 
   const filterChannels = () => {
     let filtered = channels;
+
+    // Filter by selected category
     if (selectedCategory !== 'All') {
-      filtered = filtered.filter(channel => channel.group === selectedCategory);
+      filtered = filtered.filter(channel => channel.groupTitle === selectedCategory);
     }
+
+    // Filter by search query
     if (searchQuery) {
-      filtered = filtered.filter(channel => channel.title.toLowerCase().includes(searchQuery.toLowerCase()));
+      filtered = filtered.filter(channel =>
+        channel.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     }
+
     setFilteredChannels(filtered);
   };
 
