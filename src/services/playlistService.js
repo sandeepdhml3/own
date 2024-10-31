@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const playlistUrl = 'https://m3u.ch/pl/d2629832a9bc61b18ed3ff4c4594861c_4d0e3ead030c975b02d6349295b035e0.m3u';
+const playlistUrl = 'http://localhost/jiotv-be/playlist.php';
 
 const fetchPlaylist = async () => {
   try {
@@ -15,26 +15,24 @@ const fetchPlaylist = async () => {
 const parsePlaylist = (data) => {
   const lines = data.split('\n');
   const channels = [];
-  let currentChannel = {};
 
   lines.forEach(line => {
     if (line.startsWith('#EXTINF')) {
-      // Update regex to match the new format with tvg-id, tvg-logo, and group-title
-      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
+      // Adjust regex to capture tvg-id, tvg-logo, group-title, title, and URL on the same line
+      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+?) (http.+)/);
       if (channelInfo) {
-        const [, tvgId, tvgLogo, groupTitle, title] = channelInfo;
-        
-        currentChannel = {
+        const [, tvgId, tvgLogo, groupTitle, title, url] = channelInfo;
+
+        const currentChannel = {
           tvgId: tvgId.trim(),
           tvgLogo: tvgLogo.trim(),
           groupTitle: groupTitle.trim(),
           title: title.trim(),
+          url: url.trim(),
         };
+
+        channels.push(currentChannel);
       }
-    } else if (line.startsWith('http') && currentChannel.title) {
-      currentChannel.url = line.trim();
-      channels.push(currentChannel);
-      currentChannel = {};
     }
   });
 
