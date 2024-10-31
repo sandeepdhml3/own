@@ -15,23 +15,34 @@ const fetchPlaylist = async () => {
 const parsePlaylist = (data) => {
   const lines = data.split('\n');
   const channels = [];
+  let currentChannel = {};
 
-  lines.forEach(line => {
+  lines.forEach((line) => {
+    // Check for channel info
     if (line.startsWith('#EXTINF')) {
-      // Adjust regex to capture tvg-id, tvg-logo, group-title, title, and URL on the same line
-      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+?) (http.+)/);
+      // Adjust regex to capture tvg-id, tvg-logo, group-title, title
+      const channelInfo = line.match(/#EXTINF:-1 tvg-id="(.+?)" tvg-logo="(.+?)" group-title="(.+?)",(.+)/);
       if (channelInfo) {
-        const [, tvgId, tvgLogo, groupTitle, title, url] = channelInfo;
+        const [, tvgId, tvgLogo, groupTitle, title] = channelInfo;
 
-        const currentChannel = {
+        // Create a new channel object with the captured details
+        currentChannel = {
           tvgId: tvgId.trim(),
           tvgLogo: tvgLogo.trim(),
           groupTitle: groupTitle.trim(),
           title: title.trim(),
-          url: url.trim(),
+          url: '', // Initialize URL to be populated in the next line
         };
+      }
+    }
 
-        channels.push(currentChannel);
+    // Check for the URL line
+    if (line.startsWith('http')) {
+      // If the line starts with 'http', set the URL for the current channel
+      if (currentChannel) {
+        currentChannel.url = line.trim();
+        channels.push(currentChannel); // Add the channel to the list
+        currentChannel = {}; // Reset currentChannel for the next channel
       }
     }
   });
