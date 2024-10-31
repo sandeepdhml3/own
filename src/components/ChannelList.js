@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes for type-checking
 import './ChannelList.css'; // Import the CSS file
 
 const ChannelList = ({ channels, onSelect }) => {
-  const [activeChannel, setActiveChannel] = useState(null);
+  const [activeChannelId, setActiveChannelId] = useState(null); // Track active channel by ID
 
   const handleSelect = (channel) => {
-    setActiveChannel(channel); // Track the active channel
+    setActiveChannelId(channel.tvgId); // Use tvgId for tracking active channel
     onSelect(channel); // Pass the channel to parent for playing in video player
   };
 
   return (
     <div className="channel-list">
-      {channels.map((channel, index) => (
+      {channels.map((channel) => (
         <div
-          key={channel.tvgId || index}
-          className={`channel-list-item ${activeChannel === channel ? 'active' : ''}`}
+          key={channel.tvgId}
+          className={`channel-list-item ${activeChannelId === channel.tvgId ? 'active' : ''}`}
           onClick={() => handleSelect(channel)}
+          role="button" // Accessibility feature
+          tabIndex={0} // Make the item focusable
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              handleSelect(channel); // Select channel on Enter key press
+            }
+          }}
         >
           <img
             src={channel.tvgLogo || 'https://via.placeholder.com/50'}
-            alt={channel.title}
+            alt={channel.title || 'Channel logo'}
             className="channel-logo"
           />
           <div className="channel-info">
@@ -30,6 +38,19 @@ const ChannelList = ({ channels, onSelect }) => {
       ))}
     </div>
   );
+};
+
+// Define prop types for the component
+ChannelList.propTypes = {
+  channels: PropTypes.arrayOf(
+    PropTypes.shape({
+      tvgId: PropTypes.string.isRequired,
+      tvgLogo: PropTypes.string,
+      groupTitle: PropTypes.string,
+      title: PropTypes.string,
+    })
+  ).isRequired,
+  onSelect: PropTypes.func.isRequired,
 };
 
 export default ChannelList;
