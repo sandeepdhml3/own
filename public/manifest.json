@@ -1,21 +1,21 @@
 {
-  "name": "TV TODAY",
-  "short_name": "TV",
+  "name": "Own Rouge",
+  "short_name": "OwnRouge",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "description": "A brief description of your app.",
+  "theme_color": "#4CAF50",
+  "description": "Your go-to app for live streaming channels.",
   "icons": [
     {
-      "src": "logo5.png",
+      "src": "/logo5.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512x512.png",
+      "src": "/logo5.png",
       "sizes": "512x512",
-      "type": "logo5.png"
+      "type": "image/png"
     }
   ]
 }
